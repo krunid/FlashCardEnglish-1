@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>แฟลชการ์ดคำศัพท์</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>แฟลชการ์ดคำศัพท์</h1>
+
+  <div class="flashcard-container" onclick="flipCard()">
+    <div class="flashcard" id="flashcard">
+      <div class="flashcard-side front" id="front">
+        <img id="img-front" src="" alt="ภาพคำศัพท์">
+        <div id="word">Loading...</div>
+      </div>
+      <div class="flashcard-side back" id="back">
+        <img id="img-back" src="" alt="ภาพคำศัพท์">
+        <div id="meaning">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button onclick="speakWord()">🔊 พูด</button>
+    <button onclick="nextCard()">ถัดไป</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - แฟลชการ์ด</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>📋 จัดการคำศัพท์</h2>
+  <input type="text" id="word" placeholder="คำศัพท์ (อังกฤษ)">
+  <input type="text" id="meaning" placeholder="คำแปล (ไทย)">
+  <input type="url" id="image" placeholder="URL ภาพประกอบ">
+  <button onclick="addWord()">➕ เพิ่มคำศัพท์</button>
+
+  <div class="word-list" id="word-list">กำลังโหลด...</div>
+
+  <script src="script.js"></script>
+  <script>
+    loadWordList();
+
+    async function addWord() {
+      const word = document.getElementById('word').value;
+      const meaning = document.getElementById('meaning').value;
+      const image = document.getElementById('image').value;
+
+      if (!word || !meaning || !image) return alert("กรุณากรอกให้ครบ");
+
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        body: JSON.stringify({ word, meaning, image }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      document.getElementById('word').value = '';
+      document.getElementById('meaning').value = '';
+      document.getElementById('image').value = '';
+      loadWordList();
+    }
+
+    async function deleteWord(word) {
+      await fetch(`${SHEET_URL}?word=${encodeURIComponent(word)}`, { method: 'DELETE' });
+      loadWordList();
+    }
+
+    async function loadWordList() {
+      const res = await fetch(SHEET_URL);
+      const data = await res.json();
+      const container = document.getElementById('word-list');
+      container.innerHTML = '';
+      data.forEach(item => {
+        container.innerHTML += `
+          <div class="word-item">
+            <div>
+              <strong>${item.word}</strong><br><small>${item.meaning}</small>
+            </div>
+            <button onclick="deleteWord('${item.word}')">🗑 ลบ</button>
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
